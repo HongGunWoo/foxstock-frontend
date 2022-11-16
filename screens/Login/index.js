@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
+		backgroundColor: 'white'
 	},
 	header: {
 		backgroundColor: 'transparent',
@@ -55,37 +56,39 @@ const Login = () => {
 
 	const { mutate, data } = useMutation(
 		['signIn'],
-		loginUser,
-		{
-			onSuccess: () => {
-				queryClient.setQueryData(['userEmail'], email)
-				navigation.navigate('HomeStackScreen');
-			}
-		}
+		async (userInfo) => {
+			const url = 'http://ykh8746.iptime.org:8080/login';
+			return await axios
+				.post(url, userInfo)
+				.then((res) => setCheckLogin(res.data));
+		},
 	)
 
-		useEffect(() => {
-			checkLogin ? console.log('success') : console.log('false');
-		}, [checkLogin])
+	useEffect(() => {
+		if (checkLogin) {
+			queryClient.setQueryData(['userEmail'], email)
+			navigation.navigate('HomeStackScreen');
+		}
+	}, [checkLogin])
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>여우의 주식 레시피</Text>
 			<TextInput
 				style={styles.inputBox}
-				left={<TextInput.Icon name="account"/>}
+				left={<TextInput.Icon name="account" />}
 				placeholder='Email'
 				// activeUnderlineColor={}
 				keyboardType='email-address'
-				value = {email}
+				value={email}
 				onChangeText={(email) => setEmail(email)}
 			/>
 			<TextInput
 				style={styles.inputBox}
-				left={<TextInput.Icon name="lock"/>}
+				left={<TextInput.Icon name="lock" />}
 				placeholder='Password'
 				// activeUnderlineColor={}
-				value = {password}
+				value={password}
 				onChangeText={(password) => setPassword(password)}
 				secureTextEntry
 			/>
@@ -105,7 +108,7 @@ const Login = () => {
 				회원가입
 			</Button>
 			<Button style={styles.findButton} mode='text'>아이디/비밀번호 찾기</Button>
-			<StatusBar style='light'/>
+			<StatusBar style='light' />
 		</View>
 	);
 };

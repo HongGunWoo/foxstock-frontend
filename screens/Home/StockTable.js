@@ -45,7 +45,9 @@ const StockTable = (props) => {
 	const { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
 		[PageList[props.route.name]],
 		async ({ pageParam = 0 }) => {
-			return await fetchRepo(pageParam);
+			return await axios
+			.get(`http://ykh8746.iptime.org:8080/stock/${PageList[props.route.name]}?page=${pageParam}`)
+			.then((res) => res.data);;
 		},
 		{
 			getNextPageParam: (lastPage, allPages) => {
@@ -94,7 +96,7 @@ const StockTable = (props) => {
 					keyExtractor={todoItemExtractorKey}
 					renderItem={renderData}
 					onEndReached={loadMore}
-					onEndReachedThreshold={0.5}
+					onEndReachedThreshold={0.3}
 					ListFooterComponent={isFetchingNextPage
 						? <ActivityIndicator size='small' color='#E84545' />
 						: null}

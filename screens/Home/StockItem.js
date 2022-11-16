@@ -28,7 +28,6 @@ const StockItem = ({ item }) => {
 		initalData: false,
 		staleTime: Infinity,
 	});
-	// console.log(item);
 
 	const showModal = () => setVisible(true);
 	const hideModal = () => setVisible(false);
@@ -38,7 +37,6 @@ const StockItem = ({ item }) => {
 		checkStock ? delOrAdd = 'deleteInterest' : delOrAdd = 'addInterest'
 		return await axios
 			.post(`http://ykh8746.iptime.org:8080/${delOrAdd}`, stockInfo)
-			// .post(`http://119.56.230.221:8080/${delOrAdd}`, stockInfo)
 			.then((res) => setCheckStock(res.data));
 	}
 
@@ -47,7 +45,14 @@ const StockItem = ({ item }) => {
 	}, [checkStock])
 
 	const { mutate, data } = useMutation(
-		setInterestStock,
+		['interest'],
+		async (stockInfo) => {
+			let delOrAdd = 'addInterest'
+			checkStock ? delOrAdd = 'deleteInterest' : delOrAdd = 'addInterest'
+			return await axios
+				.post(`http://ykh8746.iptime.org:8080/${delOrAdd}`, stockInfo)
+				.then((res) => setCheckStock(res.data));
+		},
 	)
 
 	return (

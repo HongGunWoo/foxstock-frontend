@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { StyleSheet, View, StatusBar } from 'react-native';
 import { Searchbar, Text, IconButton, Avatar, Button } from 'react-native-paper';
@@ -52,9 +52,9 @@ const Home = () => {
 				/>
 				{userEmail ?
 					<Avatar.Text
-						style={{ ...styles.loginButton, backgroundColor: 'red' }}
+						style={{ ...styles.loginButton, backgroundColor: 'black' }}
 						label={userEmail[0]}
-						color="black"
+						color="white"
 						size={50}
 					/> :
 					<Button
@@ -67,7 +67,7 @@ const Home = () => {
 			</View>
 			<Tab.Navigator
 				screenOptions={{
-					tabBarItemStyle: { width: 80 },
+					tabBarItemStyle: { width: 90 },
 					tabBarIndicatorStyle: { backgroundColor: 'red' },
 				}}
 			>

@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { TextInput, Button } from 'react-native-paper';
-import { StyleSheet, Text, View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { TextInput, Button, Headline } from 'react-native-paper';
+import { Keyboard, KeyboardAvoidingView, Platform, StatusBar, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import getEnvVars from '../../environment';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+
+const { apiUrl } = getEnvVars();
+const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight;
 
 const styles = StyleSheet.create({
-	title: {
-		alignSelf: 'center',
-	},
 	container: {
 		flex: 1,
-		justifyContent: 'center',
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		paddingHorizontal: 30,
+		paddingTop: 100,
+	},
+	headline: {
+		fontSize: 30,
+		marginStart: 10
 	},
 	header: {
 		backgroundColor: 'transparent',
@@ -21,18 +27,15 @@ const styles = StyleSheet.create({
 		marginTop: 0
 	},
 	inputBox: {
-		marginHorizontal: 50,
 		backgroundColor: 'transparent',
 		marginBottom: 20,
 	},
 	loginButton: {
-		marginHorizontal: 50,
 		marginBottom: 10,
 		borderRadius: 20,
 		padding: 5,
 	},
 	findButton: {
-		marginHorizontal: 40,
 		marginBottom: 10,
 		borderRadius: 20,
 		height: 50,
@@ -45,71 +48,75 @@ const Login = () => {
 	const queryClient = useQueryClient();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [checkLogin, setCheckLogin] = useState(false);
-
-	const loginUser = async (userInfo) => {
-		const url = 'http://ykh8746.iptime.org:8080/login';
-		return await axios
-			.post(url, userInfo)
-			.then((res) => setCheckLogin(res.data));
-	}
+	const [checkLoginSuccess, setCheckLoginSuccess] = useState(false);
 
 	const { mutate, data } = useMutation(
 		['signIn'],
 		async (userInfo) => {
-			const url = 'http://ykh8746.iptime.org:8080/login';
+			const url = `${apiUrl}/login`;
 			return await axios
 				.post(url, userInfo)
-				.then((res) => setCheckLogin(res.data));
-		},
+				.then((res) => setCheckLoginSuccess(res.data));
+		}
 	)
 
 	useEffect(() => {
-		if (checkLogin) {
+		if (checkLoginSuccess) {
 			queryClient.setQueryData(['userEmail'], email)
 			navigation.navigate('HomeStackScreen');
 		}
-	}, [checkLogin])
+	}, [checkLoginSuccess])
 
 	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>여우의 주식 레시피</Text>
-			<TextInput
-				style={styles.inputBox}
-				left={<TextInput.Icon name="account" />}
-				placeholder='Email'
-				// activeUnderlineColor={}
-				keyboardType='email-address'
-				value={email}
-				onChangeText={(email) => setEmail(email)}
-			/>
-			<TextInput
-				style={styles.inputBox}
-				left={<TextInput.Icon name="lock" />}
-				placeholder='Password'
-				// activeUnderlineColor={}
-				value={password}
-				onChangeText={(password) => setPassword(password)}
-				secureTextEntry
-			/>
-			<Button
-				style={styles.loginButton}
-				mode='contained'
-				onPress={() => mutate({
-					"email": email,
-					"password": password,
-				})}
-			>로그인</Button>
-			<Button
-				style={styles.loginButton}
-				mode='contained'
-				onPress={() => navigation.navigate('SignUp')}
-			>
-				회원가입
-			</Button>
-			<Button style={styles.findButton} mode='text'>아이디/비밀번호 찾기</Button>
-			<StatusBar style='light' />
-		</View>
+		<KeyboardAvoidingView
+			behavior={Platform.OS === "ios" ? "padding" : null}
+			style={{ flex: 1 }}
+			keyboardVerticalOffset={StatusBarHeight + 44}
+		>
+			<ScrollView style={{ backgroundColor: 'white' }}>
+				<TouchableWithoutFeedback onPress={Platform.OS === 'web' ? null : Keyboard.dismiss}>
+					<View style={styles.container}>
+						<Headline style={styles.headline}>여우의</Headline>
+						<Headline style={{ ...styles.headline, marginBottom: 10 }}>주식 레시피</Headline>
+						<TextInput
+							style={styles.inputBox}
+							left={<TextInput.Icon name="account" />}
+							placeholder='Email'
+							// activeUnderlineColor={}
+							keyboardType='email-address'
+							value={email}
+							onChangeText={(email) => setEmail(email)}
+						/>
+						<TextInput
+							style={styles.inputBox}
+							left={<TextInput.Icon name="lock" />}
+							placeholder='Password'
+							// activeUnderlineColor={}
+							value={password}
+							onChangeText={(password) => setPassword(password)}
+							secureTextEntry
+						/>
+						<Button
+							style={styles.loginButton}
+							mode='contained'
+							onPress={() => mutate({
+								"email": email,
+								"password": password,
+							})}
+						>로그인</Button>
+						<Button
+							style={styles.loginButton}
+							mode='contained'
+							onPress={() => navigation.navigate('SignUp')}
+						>
+							회원가입
+						</Button>
+						<Button style={styles.findButton} mode='text'>아이디/비밀번호 찾기</Button>
+					</View>
+				</TouchableWithoutFeedback>
+			</ScrollView>
+		</KeyboardAvoidingView>
+
 	);
 };
 

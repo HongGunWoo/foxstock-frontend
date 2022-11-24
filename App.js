@@ -26,7 +26,7 @@ export default function App() {
 		<QueryClientProvider client={queryClient}>
 			<PaperProvider theme={theme}>
 				<StackNavigator />
-				<StatusBar style='auto' />
+				<StatusBar />
 			</PaperProvider>
 		</QueryClientProvider>
 	);

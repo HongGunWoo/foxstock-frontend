@@ -2,33 +2,35 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
-import { Searchbar, Text, IconButton, Avatar, Button } from 'react-native-paper';
-import Loading from '../Loading';
+import { StyleSheet, View, StatusBar, Platform } from 'react-native';
+import { Searchbar, Avatar, Button } from 'react-native-paper';
 import StockTable from './StockTable';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Sending']);
 
 const Tab = createMaterialTopTabNavigator();
+const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingTop: StatusBar.currentHeight,
+		paddingTop: StatusBarHeight,
+		backgroundColor: 'white',
 	},
 	header: {
 		flexDirection: 'row',
 		backgroundColor: 'white',
-		// border: 0,
-		// marginTop: 0,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	inputBox: {
 		margin: 10,
-		// marginBottom: 0,
+		marginBottom: 2,
 		flex: 1,
+		height: 40,
 	},
 	loginButton: {
-		// margin: 15,
 		marginRight: 10,
 	}
 })
@@ -36,10 +38,19 @@ const styles = StyleSheet.create({
 const Home = () => {
 	const navigation = useNavigation();
 	const [serachQuery, setSearchQuery] = useState('');
-	const { data: userEmail } = useQuery(['userEmail'], {
-		initalData: false,
-		staleTime: Infinity,
-	});
+
+	const { data: userEmail } = useQuery(
+		['userEmail'],
+		() => {
+			if(userEmail !== undefined) {
+				return userEmail
+			}
+			return null;
+		},
+		{
+			initalData: false,
+			staleTime: Infinity,
+		});
 
 	return (
 		<View style={styles.container}>
@@ -49,11 +60,14 @@ const Home = () => {
 					value={serachQuery}
 					onChangeText={serachQuery => setSearchQuery(serachQuery)}
 					style={styles.inputBox}
+					onIconPress={() => {
+						console.log("hi");
+					}}
 				/>
 				{userEmail ?
 					<Avatar.Text
 						style={{ ...styles.loginButton, backgroundColor: 'black' }}
-						label={userEmail[0]}
+						label={userEmail[0].toUpperCase()}
 						color="white"
 						size={50}
 					/> :

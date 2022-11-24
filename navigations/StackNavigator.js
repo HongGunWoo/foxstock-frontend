@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
 import Home from '../screens/Home';
+import Guide from '../screens/Guide';
 
 
 const HomeTab = createMaterialBottomTabNavigator();
@@ -31,7 +32,7 @@ const HomeStackScreen = () => {
 			/>
 			<HomeTab.Screen
 				name="Guide"
-				component={Home}
+				component={Guide}
 				options={{
 					tabBarIcon: () => (<MaterialCommunityIcons name="book-open-outline" color='white' size={25} />),
 				}}

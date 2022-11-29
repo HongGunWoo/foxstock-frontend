@@ -8,6 +8,11 @@ import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
 import Home from '../screens/Home';
 import Guide from '../screens/Guide';
+import FindUserInfo from '../screens/FindUserInfo';
+import FindPW from '../screens/FindUserInfo/FindPW';
+import FindID from '../screens/FindUserInfo/FindID';
+import ChangePW from '../screens/ChangePW';
+import SearchPage from '../screens/SearchPage';
 
 
 const HomeTab = createMaterialBottomTabNavigator();
@@ -62,7 +67,31 @@ const StackNavigator = () => {
 					component={SignUp}
 					options={{ title: '회원가입' }}
 				/>
-
+				<Stack.Screen 
+					name='FindUserInfo'
+					component={FindUserInfo}
+					options={{ title: 'ID/PW 찾기' }}
+				/>
+				<Stack.Screen 
+					name='FindPW'
+					component={FindPW}
+					options={{ title: 'PW 찾기' }}
+				/>
+				<Stack.Screen 
+					name='FindID'
+					component={FindID}
+					options={{ title: 'ID 찾기' }}
+				/>
+				<Stack.Screen 
+					name="ChangePW"
+					component={ChangePW}
+					onption={{ title: 'PW 변경' }}
+				/>
+				<Stack.Screen
+					name='SearchPage'
+					component={SearchPage}
+					options={{ title: '검색 결과' }}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	)

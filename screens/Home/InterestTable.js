@@ -1,6 +1,6 @@
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, FlatList, ActivityIndicator, StyleSheet, Modal } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Modal } from 'react-native';
 import { Colors, Divider, FAB, IconButton, Provider } from 'react-native-paper';
 import StockItem from './StockItem';
 import axios from 'axios';
@@ -74,13 +74,7 @@ const styles = StyleSheet.create({
 	},
 })
 
-const PageList = {
-	"전체": "all",
-	"KOSPI": "kospi",
-	"KOSDAQ": "kosdaq",
-}
-
-const StockTable = (props) => {
+const InterestTable = (props) => {
 	const isFocused = useIsFocused();
 	const scrollRef = useRef();
 	const [visible, setVisible] = useState(false);
@@ -90,12 +84,13 @@ const StockTable = (props) => {
 	const [coordY, setCoordY] = useState(0);
 	const [userInterest, setUserInterest] = useState([]);
 
-	const { mutate, isLoading: userLoading } = useMutation(
-		['interestGet'],
+	const { mutate, isLoading: userLoading, data } = useMutation(
+		['interestTableGet'],
 		async (email) => {
 			return await axios
-				.post(`${apiUrl}/returnInterest2`, email)
-				.then((res) => setUserInterest(res.data))
+				.post(`${apiUrl}/returnInterest`, email)
+				// .then((res) => setUserInterest(res.data))
+				.then((res) => res.data)
 		}
 	)
 
@@ -105,22 +100,6 @@ const StockTable = (props) => {
 		setVisible(true);
 	};
 	const hideModal = () => setVisible(false);
-
-	const { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-		[`infinite${PageList[props.route.name]}`, props.route.name],
-		async ({ pageParam = 0 }) => {
-			return await axios
-				.get(`${apiUrl}/stock/${PageList[props.route.name]}?page=${pageParam}`)
-				.then((res) => res.data);
-		},
-		{
-			getNextPageParam: (lastPage, allPages) => {
-				const maxPage = lastPage.totalPages;
-				const nextPage = allPages.length + 1;
-				return nextPage <= maxPage ? nextPage : undefined;
-			},
-		}
-	);
 
 	const { data: userEmail, isLoading: emailLoading } = useQuery(
 		['userEmail'],
@@ -143,7 +122,11 @@ const StockTable = (props) => {
 		}
 	}, [isFocused])
 
-	if (isLoading || userLoading || emailLoading) {
+	if (userLoading || emailLoading) {
+		return null;
+	}
+
+	if(userEmail === null && userEmail === undefined) {
 		return null;
 	}
 
@@ -208,24 +191,15 @@ const StockTable = (props) => {
 				<Divider style={{ backgroundColor: 'black' }} />
 				<FlatList
 					ref={scrollRef}
-					data={data.pages.map(page => page.content).flat()}
+					data={data}
 					keyExtractor={(item, index) => {
 						return index.toString();
 					}}
 					renderItem={(item) => {
 						return (
-							<StockItem item={item} checkStar={userInterest.includes(item.item.srtnCd)} />
+							<StockItem item={item} checkStar={true} />
 						)
 					}}
-					onEndReached={() => {
-						if (hasNextPage) {
-							fetchNextPage();
-						}
-					}}
-					onEndReachedThreshold={0.3}
-					ListFooterComponent={isFetchingNextPage
-						? <ActivityIndicator size='small' color='#E84545' />
-						: null}
 				/>
 				<FAB
 					style={styles.scrollTopBtn}
@@ -237,4 +211,4 @@ const StockTable = (props) => {
 	)
 };
 
-export default StockTable;
+export default InterestTable;

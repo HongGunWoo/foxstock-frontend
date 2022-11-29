@@ -1,11 +1,12 @@
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, FlatList, ActivityIndicator, StyleSheet, Modal } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Modal } from 'react-native';
 import { Colors, Divider, FAB, IconButton, Provider } from 'react-native-paper';
-import StockItem from './StockItem';
 import axios from 'axios';
 import getEnvVars from '../../environment';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+
+import StockItem from '../Home/StockItem';
 
 const { apiUrl } = getEnvVars();
 
@@ -74,13 +75,7 @@ const styles = StyleSheet.create({
 	},
 })
 
-const PageList = {
-	"전체": "all",
-	"KOSPI": "kospi",
-	"KOSDAQ": "kosdaq",
-}
-
-const StockTable = (props) => {
+const SearchPage = ({route}) => {
 	const isFocused = useIsFocused();
 	const scrollRef = useRef();
 	const [visible, setVisible] = useState(false);
@@ -90,6 +85,7 @@ const StockTable = (props) => {
 	const [coordY, setCoordY] = useState(0);
 	const [userInterest, setUserInterest] = useState([]);
 
+
 	const { mutate, isLoading: userLoading } = useMutation(
 		['interestGet'],
 		async (email) => {
@@ -98,29 +94,6 @@ const StockTable = (props) => {
 				.then((res) => setUserInterest(res.data))
 		}
 	)
-
-	const showModal = (title, content) => {
-		setTitle(title);
-		setContent(content);
-		setVisible(true);
-	};
-	const hideModal = () => setVisible(false);
-
-	const { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-		[`infinite${PageList[props.route.name]}`, props.route.name],
-		async ({ pageParam = 0 }) => {
-			return await axios
-				.get(`${apiUrl}/stock/${PageList[props.route.name]}?page=${pageParam}`)
-				.then((res) => res.data);
-		},
-		{
-			getNextPageParam: (lastPage, allPages) => {
-				const maxPage = lastPage.totalPages;
-				const nextPage = allPages.length + 1;
-				return nextPage <= maxPage ? nextPage : undefined;
-			},
-		}
-	);
 
 	const { data: userEmail, isLoading: emailLoading } = useQuery(
 		['userEmail'],
@@ -135,6 +108,22 @@ const StockTable = (props) => {
 			staleTime: Infinity,
 		});
 
+	const { isLoading, data } = useQuery(
+		['search'],
+		async () => {
+			return await axios
+				.get(`${apiUrl}/stock/search?query=${route.params.query}`)
+				.then((res) => res.data.content);
+		},
+	)
+
+	const showModal = (title, content) => {
+		setTitle(title);
+		setContent(content);
+		setVisible(true);
+	};
+	const hideModal = () => setVisible(false);
+
 	useEffect(() => {
 		if (userEmail !== null && userEmail !== undefined) {
 			mutate({
@@ -143,11 +132,11 @@ const StockTable = (props) => {
 		}
 	}, [isFocused])
 
+
 	if (isLoading || userLoading || emailLoading) {
 		return null;
 	}
 
-	//종목이름, 현재가, 기대수익률
 	return (
 		<Provider>
 			<Modal
@@ -208,7 +197,7 @@ const StockTable = (props) => {
 				<Divider style={{ backgroundColor: 'black' }} />
 				<FlatList
 					ref={scrollRef}
-					data={data.pages.map(page => page.content).flat()}
+					data={data}
 					keyExtractor={(item, index) => {
 						return index.toString();
 					}}
@@ -217,15 +206,6 @@ const StockTable = (props) => {
 							<StockItem item={item} checkStar={userInterest.includes(item.item.srtnCd)} />
 						)
 					}}
-					onEndReached={() => {
-						if (hasNextPage) {
-							fetchNextPage();
-						}
-					}}
-					onEndReachedThreshold={0.3}
-					ListFooterComponent={isFetchingNextPage
-						? <ActivityIndicator size='small' color='#E84545' />
-						: null}
 				/>
 				<FAB
 					style={styles.scrollTopBtn}
@@ -234,7 +214,7 @@ const StockTable = (props) => {
 				/>
 			</View>
 		</Provider>
-	)
+	);
 };
 
-export default StockTable;
+export default SearchPage;

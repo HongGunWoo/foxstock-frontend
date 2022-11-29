@@ -9,6 +9,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 const { apiUrl } = getEnvVars();
 const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight;
+const QuestionList = ['내가 졸업한 초등학교는?', '내가 가장 아끼는 물건은?', '내가 가장 좋아하는 색깔은?', '내가 키우는 애완동물 이름은?']
 
 const styles = StyleSheet.create({
 	container: {
@@ -47,6 +48,7 @@ const SignUp = () => {
 	const [checkAnswer, setCheckAnswer] = useState('');
 	const [expanded, setExpanded] = useState(false);
 	const [checkSuccess, setCheckSuccess] = useState(false);
+	const [checkAnswerIdx, setCheckAnswerIdx] = useState();
 
 	const { mutate, data } = useMutation(
 		['signUp'],
@@ -135,30 +137,16 @@ const SignUp = () => {
 							expanded={expanded}
 							onPress={() => setExpanded(!expanded)}
 						>
-							<List.Item
-								title="내가 졸업한 초등학교는?"
+							{QuestionList.map((content, idx) => {
+								return (<List.Item
+								key={idx}
+								title={content}
 								onPress={() => {
-									setCheckQuestion("내가 졸업한 초등학교는?");
+									setCheckQuestion(content);
+									setCheckAnswerIdx(idx);
 									setExpanded(false);
-								}} />
-							<List.Item
-								title="내가 가장 아끼는 물건은?"
-								onPress={() => {
-									setCheckQuestion("내가 가장 아끼는 물건은?");
-									setExpanded(false);
-								}} />
-							<List.Item
-								title="내가 가장 좋아하는 색깔은?"
-								onPress={() => {
-									setCheckQuestion("내가 가장 좋아하는 색깔은?");
-									setExpanded(false);
-								}} />
-							<List.Item
-								title="내가 키우는 애완동물 이름은?"
-								onPress={() => {
-									setCheckQuestion("내가 키우는 애완동물 이름은?");
-									setExpanded(false);
-								}} />
+								}} />)
+							})}
 						</List.Accordion>
 					</List.Section>
 
@@ -179,7 +167,7 @@ const SignUp = () => {
 							"email": email,
 							"password": password,
 							"checkPassword": checkPassword,
-							"userCheckQuestionNumber": 1,
+							"userCheckQuestionNumber": checkAnswerIdx,
 							"userCheckQuestionAnswer": checkAnswer,
 						})}
 					>회원가입</Button>

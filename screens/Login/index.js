@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: 'white',
 		paddingHorizontal: 30,
-		paddingTop: 100,
+		paddingTop: 40,
 	},
 	headline: {
 		fontSize: 30,
@@ -56,13 +56,14 @@ const Login = () => {
 			const url = `${apiUrl}/login`;
 			return await axios
 				.post(url, userInfo)
-				.then((res) => setCheckLoginSuccess(res.data));
+				.then((res) => setCheckLoginSuccess(res.data))
+				
 		}
 	)
 
 	useEffect(() => {
 		if (checkLoginSuccess) {
-			queryClient.setQueryData(['userEmail'], email)
+			queryClient.setQueriesData(['userEmail'], email)
 			navigation.navigate('HomeStackScreen');
 		}
 	}, [checkLoginSuccess])
@@ -111,7 +112,13 @@ const Login = () => {
 						>
 							회원가입
 						</Button>
-						<Button style={styles.findButton} mode='text'>아이디/비밀번호 찾기</Button>
+						<Button
+							style={styles.findButton}
+							mode='text'
+							onPress={() => navigation.navigate('FindUserInfo')}
+						>
+							아이디/비밀번호 찾기
+						</Button>
 					</View>
 				</TouchableWithoutFeedback>
 			</ScrollView>

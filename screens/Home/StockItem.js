@@ -23,10 +23,10 @@ const styles = StyleSheet.create({
 	}
 })
 
-const StockItem = ({ item }) => {
+const StockItem = ({ item, checkStar }) => {
 	const [iconName, setIconName] = useState('star-outline')
 	const [visible, setVisible] = useState(false);
-	const [checkStock, setCheckStock] = useState(false);
+	const [checkStock, setCheckStock] = useState(checkStar);
 	const { data: userEmail } = useQuery(
 		['userEmail'],
 		() => {
@@ -42,6 +42,10 @@ const StockItem = ({ item }) => {
 
 	const showModal = () => setVisible(true);
 	const hideModal = () => setVisible(false);
+
+	// useEffect(() => {
+	// 	checkStar ? setCheckStock(true) : setCheckStock(false);
+	// }, [])
 
 	useEffect(() => {
 		checkStock ? setIconName('star') : setIconName('star-outline');
@@ -71,6 +75,7 @@ const StockItem = ({ item }) => {
 				</Text>
 				<Text style={{ flex: 1, textAlign: 'right' }} onPress={showModal}>{item.item.currentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
 				<Text style={{ flex: 1, textAlign: 'right' }} onPress={showModal}>{item.item.purchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+				{/* <Text style={{ flex: 1, textAlign: 'right' }} onPress={showModal}>{typeof(item.item.purchasePrice)}</Text> */}
 				<Text style={{ flex: 0.8, textAlign: 'right' }} onPress={showModal}>
 					{item.item.expectedReturn >= 1 ? Math.round(item.item.expectedReturn * 100 - 100) + '%' :
 						Math.round((1 - item.item.expectedReturn) * -100) + '%'}

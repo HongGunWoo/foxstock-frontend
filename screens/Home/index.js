@@ -1,18 +1,17 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { StyleSheet, View, StatusBar, Platform, TouchableWithoutFeedback } from 'react-native';
-import { Searchbar, Avatar, Button, Provider, Portal, FAB, Text } from 'react-native-paper';
-import StockTable from './StockTable';
+import { Searchbar, Avatar, Button } from 'react-native-paper';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { LogBox } from 'react-native';
-import axios from 'axios';
-import getEnvVars from '../../environment';
+
 import InterestTable from './InterestTable';
+import StockTable from './StockTable';
+
 LogBox.ignoreLogs(['Sending']);
 
-const { apiUrl } = getEnvVars();
 const Tab = createMaterialTopTabNavigator();
 const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight
 
@@ -38,20 +37,11 @@ const styles = StyleSheet.create({
 		marginRight: 10,
 		marginTop: 5,
 	},
-	userButton: {
-		// borderRadius: 100,
-		backgroundColor: 'black',
-		color: 'white'
-	}
 })
 
 const Home = () => {
 	const navigation = useNavigation();
 	const [searchQuery, setSearchQuery] = useState('');
-
-	const [state, setState] = useState({ open: false });
-  const onStateChange = ({ open }) => setState({ open });
-  const { open } = state;
 
 	const { data: userEmail } = useQuery(
 		['userEmail'],
@@ -74,40 +64,46 @@ const Home = () => {
 					value={searchQuery}
 					onChangeText={serachQuery => setSearchQuery(serachQuery)}
 					style={styles.inputBox}
-				onIconPress={() => {
-					navigation.navigate('SearchPage', {query: searchQuery})
-					setSearchQuery('');
-				}}
-				onSubmitEditing={() => {
-					navigation.navigate('SearchPage', {query: searchQuery})
-					setSearchQuery('');
-				}}
+					onIconPress={() => {
+						if (searchQuery.length > 0) {
+							navigation.navigate('SearchPage', { query: searchQuery })
+							setSearchQuery('');
+						}
+					}}
+					onSubmitEditing={() => {
+						if (searchQuery.length > 0) {
+							navigation.navigate('SearchPage', { query: searchQuery })
+							setSearchQuery('');
+						}
+					}}
 				/>
 				{userEmail ?
-				<TouchableWithoutFeedback
-					onPress={() => navigation.navigate('ChangePW')}
-				>
-					<Avatar.Text
+					<TouchableWithoutFeedback
+						onPress={() => navigation.navigate('ChangePW')}
+					>
+						<Avatar.Text
 							style={{ ...styles.loginButton, backgroundColor: 'black' }}
 							label={userEmail[0].toUpperCase()}
 							color="white"
 							size={40}
 						/>
-				</TouchableWithoutFeedback>
-					
+					</TouchableWithoutFeedback>
+
 					:
 					<Button
 						compact={true}
 						style={{ ...styles.loginButton }}
 						color='black'
 						onPress={() => navigation.navigate('Login')}
-					>로그인</Button>
+					>
+						로그인
+					</Button>
 				}
 			</View>
 			<Tab.Navigator
 				screenOptions={{
 					tabBarItemStyle: { width: 90 },
-					tabBarIndicatorStyle: { backgroundColor: 'red' },
+					tabBarIndicatorStyle: { backgroundColor: '#6200ee' },
 				}}
 			>
 				<Tab.Screen name="전체" component={StockTable} />

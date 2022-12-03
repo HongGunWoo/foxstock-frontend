@@ -1,12 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useRef, useState } from 'react';
 import { Text, View, FlatList, StyleSheet, Modal } from 'react-native';
-import { Colors, Divider, FAB, IconButton, Provider } from 'react-native-paper';
+import { Colors, Divider, IconButton, Provider } from 'react-native-paper';
 import axios from 'axios';
 import getEnvVars from '../../environment';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import StockItem from '../Home/StockItem';
+import FabUp from '../../components/FabUp';
 
 const { apiUrl } = getEnvVars();
 
@@ -36,17 +37,6 @@ const styles = StyleSheet.create({
 		marginStart: -4,
 		marginTop: -3,
 	},
-	item: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	scrollTopBtn: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
-		margin: 16,
-	},
-
 	modalView: {
 		width: 250,
 		height: 100,
@@ -73,9 +63,15 @@ const styles = StyleSheet.create({
 		right: 0,
 		top: 0,
 	},
+	queryText: {
+		paddingHorizontal: 30,
+		paddingVertical: 10,
+		flexDirection: 'row',
+		borderBottomWidth: 1,
+	}
 })
 
-const SearchPage = ({route}) => {
+const SearchPage = ({ route }) => {
 	const isFocused = useIsFocused();
 	const scrollRef = useRef();
 	const [visible, setVisible] = useState(false);
@@ -159,6 +155,14 @@ const SearchPage = ({route}) => {
 				</View>
 			</Modal>
 			<View style={styles.container}>
+				<View style={styles.queryText}>
+					<Text style={{fontWeight: 'bold'}}>
+						"{route.params.query}"
+					</Text>
+					<Text>
+						에 대한 검색 결과입니다.
+					</Text>
+				</View>
 				<View style={styles.tableHeader}>
 					<Text style={{ flex: 1.2, textAlign: 'center' }}>종목명</Text>
 					<Text style={{ flex: 1, textAlign: 'right' }}>현재가</Text>
@@ -207,11 +211,7 @@ const SearchPage = ({route}) => {
 						)
 					}}
 				/>
-				<FAB
-					style={styles.scrollTopBtn}
-					icon="chevron-up"
-					onPress={() => { scrollRef.current.scrollToIndex({ index: 0 }) }}
-				/>
+				<FabUp scrollRef={scrollRef}/>
 			</View>
 		</Provider>
 	);

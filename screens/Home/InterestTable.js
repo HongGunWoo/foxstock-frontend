@@ -1,11 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useRef, useState } from 'react';
 import { Text, View, FlatList, StyleSheet, Modal } from 'react-native';
-import { Colors, Divider, FAB, IconButton, Provider } from 'react-native-paper';
-import StockItem from './StockItem';
+import { Colors, Divider, IconButton, Provider } from 'react-native-paper';
 import axios from 'axios';
-import getEnvVars from '../../environment';
 import { useIsFocused } from '@react-navigation/native';
+
+import StockItem from './StockItem';
+import FabUp from '../../components/FabUp';
+import getEnvVars from '../../environment';
 
 const { apiUrl } = getEnvVars();
 
@@ -35,17 +37,6 @@ const styles = StyleSheet.create({
 		marginStart: -4,
 		marginTop: -3,
 	},
-	item: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	scrollTopBtn: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
-		margin: 16,
-	},
-
 	modalView: {
 		width: 250,
 		height: 100,
@@ -82,14 +73,12 @@ const InterestTable = (props) => {
 	const [content, setContent] = useState('');
 	const [coordX, setCoordX] = useState(0);
 	const [coordY, setCoordY] = useState(0);
-	const [userInterest, setUserInterest] = useState([]);
 
 	const { mutate, isLoading: userLoading, data } = useMutation(
 		['interestTableGet'],
 		async (email) => {
 			return await axios
 				.post(`${apiUrl}/returnInterest`, email)
-				// .then((res) => setUserInterest(res.data))
 				.then((res) => res.data)
 		}
 	)
@@ -130,7 +119,6 @@ const InterestTable = (props) => {
 		return null;
 	}
 
-	//종목이름, 현재가, 기대수익률
 	return (
 		<Provider>
 			<Modal
@@ -201,11 +189,7 @@ const InterestTable = (props) => {
 						)
 					}}
 				/>
-				<FAB
-					style={styles.scrollTopBtn}
-					icon="chevron-up"
-					onPress={() => { scrollRef.current.scrollToIndex({ index: 0 }) }}
-				/>
+				<FabUp scrollRef={scrollRef}/>
 			</View>
 		</Provider>
 	)

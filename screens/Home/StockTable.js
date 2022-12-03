@@ -1,11 +1,15 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, FlatList, ActivityIndicator, StyleSheet, Modal } from 'react-native';
-import { Colors, Divider, FAB, IconButton, Provider } from 'react-native-paper';
-import StockItem from './StockItem';
+import { Text, View, FlatList, StyleSheet, Modal } from 'react-native';
+import { Colors, Divider, IconButton, Provider } from 'react-native-paper';
 import axios from 'axios';
-import getEnvVars from '../../environment';
 import { useIsFocused } from '@react-navigation/native';
+
+import FabUp from '../../components/FabUp';
+import StockItem from './StockItem';
+import ListIndicator from '../../components/ListIndicator';
+import getEnvVars from '../../environment';
+
 
 const { apiUrl } = getEnvVars();
 
@@ -35,17 +39,6 @@ const styles = StyleSheet.create({
 		marginStart: -4,
 		marginTop: -3,
 	},
-	item: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	scrollTopBtn: {
-		position: 'absolute',
-		bottom: 0,
-		right: 0,
-		margin: 16,
-	},
-
 	modalView: {
 		width: 250,
 		height: 100,
@@ -147,7 +140,6 @@ const StockTable = (props) => {
 		return null;
 	}
 
-	//종목이름, 현재가, 기대수익률
 	return (
 		<Provider>
 			<Modal
@@ -183,7 +175,7 @@ const StockTable = (props) => {
 							onPress={(e) => {
 								setCoordX(e.nativeEvent.pageX);
 								setCoordY(e.nativeEvent.pageY);
-								showModal('추천 구매가란?', '1년 후 약15% 수익을 얻기 위해 추천하는 매수 가격을 말해요.');
+								showModal('추천 구매가란?', '1년 후 약 15% 수익을 얻기 위해 추천하는 매수 가격을 말해요.');
 							}
 							}
 						/>
@@ -223,15 +215,10 @@ const StockTable = (props) => {
 						}
 					}}
 					onEndReachedThreshold={0.3}
-					ListFooterComponent={isFetchingNextPage
-						? <ActivityIndicator size='small' color='#E84545' />
-						: null}
+					ListFooterComponent={isFetchingNextPage ?
+					<ListIndicator /> : null}
 				/>
-				<FAB
-					style={styles.scrollTopBtn}
-					icon="chevron-up"
-					onPress={() => { scrollRef.current.scrollToIndex({ index: 0 }) }}
-				/>
+				<FabUp scrollRef={scrollRef}/>
 			</View>
 		</Provider>
 	)

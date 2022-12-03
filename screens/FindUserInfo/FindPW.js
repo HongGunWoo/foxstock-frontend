@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Keyboard, KeyboardAvoidingView, Modal, Platform, ScrollView, StatusBar, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { Button, IconButton, List, Text, TextInput } from 'react-native-paper';
+import { HelperText, IconButton, List, Text, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigation } from '@react-navigation/native';
-import getEnvVars from '../../environment';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+
+import getEnvVars from '../../environment';
+import UserButton from '../../components/UserButton';
 
 const { apiUrl } = getEnvVars();
 const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight;
@@ -18,23 +19,9 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		paddingHorizontal: 30,
 	},
-	headline: {
-		fontSize: 30,
-		marginStart: 10
-	},
 	input: {
 		backgroundColor: 'white',
 		marginBottom: 5,
-	},
-	snackbar: {
-		backgroundColor: 'black',
-		alignSelf: 'center',
-		textAlign: 'center',
-	},
-	button: {
-		marginBottom: 30,
-		borderRadius: 20,
-		padding: 5,
 	},
 	modalView: {
 		flex: 1,
@@ -63,12 +50,9 @@ const styles = StyleSheet.create({
 })
 
 const FindPW = () => {
-	const navigation = useNavigation();
-	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [checkPassword, setCheckPassword] = useState('');
-	const [checkQuestion, setCheckQuestion] = useState('아이디/비밀번호를 찾기위한 질문을 골라주세요.')
+	const [checkQuestion, setCheckQuestion] = useState('가입 시 설정한 질문을 골라주세요.')
 	const [checkAnswer, setCheckAnswer] = useState('');
 	const [expanded, setExpanded] = useState(false);
 	const [checkSuccess, setCheckSuccess] = useState(false);
@@ -88,12 +72,12 @@ const FindPW = () => {
 		},
 	)
 
-	const showModal = (title, content) => {
-		setTitle(title);
-		setContent(content);
-		setVisible(true);
-	};
 	const hideModal = () => setVisible(false);
+
+	const hasEmailError = () => {
+		var reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		return !reg.test(email);
+	};
 
 	return (
 		<KeyboardAvoidingView
@@ -131,7 +115,6 @@ const FindPW = () => {
 										<Text style={{ fontSize: 15, fontWeight: 'bold', paddingHorizontal: 10, textAlign: 'center' }}>{password}</Text>
 										<IconButton
 											icon={'close'}
-											style={styles.buttonClose}
 											onPress={hideModal}
 											color='black'
 											size={15}
@@ -149,6 +132,9 @@ const FindPW = () => {
 							value={email}
 							onChangeText={(email) => setEmail(email)}
 						/>
+						<HelperText style={styles.helperText} type='error' visible={hasEmailError() && email !== ''}>
+							이메일주소가 올바르지 않습니다.
+						</HelperText>
 
 						<List.Section>
 							<List.Accordion
@@ -176,11 +162,8 @@ const FindPW = () => {
 							value={checkAnswer}
 							onChangeText={(checkAnswer) => setCheckAnswer(checkAnswer)}
 						/>
-
-						<Button
-							style={styles.button}
-							mode='contained'
-							disabled={checkSuccess}
+						<UserButton
+							disabled={checkSuccess || hasEmailError() || checkAnswerIdx === undefined || checkAnswer === ''}
 							onPress={() => mutate({
 								"email": email,
 								"userCheckQuestionNumber": checkAnswerIdx,
@@ -188,7 +171,7 @@ const FindPW = () => {
 							})}
 						>
 							비밀번호 찾기
-						</Button>
+						</UserButton>
 					</View>
 				</TouchableWithoutFeedback>
 			</ScrollView>

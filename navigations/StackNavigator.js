@@ -14,32 +14,29 @@ import FindID from '../screens/FindUserInfo/FindID';
 import ChangePW from '../screens/ChangePW';
 import SearchPage from '../screens/SearchPage';
 
-
 const HomeTab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 
 const HomeStackScreen = () => {
 	return (
 		<HomeTab.Navigator
 			initialRouteName='Home'
 			barStyle={{
-				backgroundColor: 'black',
-				// paddingBottom: 10
+				backgroundColor: '#660099',
 			}}
 		>
 			<HomeTab.Screen
 				name="Home"
 				component={Home}
 				options={{
-					tabBarIcon: () => (<MaterialCommunityIcons name="finance" color='white' size={25} />),
+					tabBarIcon: ({color}) => (<MaterialCommunityIcons name="finance" color={color} size={25} />),
 				}}
 			/>
 			<HomeTab.Screen
 				name="Guide"
 				component={Guide}
 				options={{
-					tabBarIcon: () => (<MaterialCommunityIcons name="book-open-outline" color='white' size={25} />),
+					tabBarIcon: ({color}) => (<MaterialCommunityIcons name="book-open-outline" color={color} size={25} />),
 				}}
 			/>
 		</HomeTab.Navigator>
@@ -60,7 +57,7 @@ const StackNavigator = () => {
 				<Stack.Screen
 					name='Login'
 					component={Login}
-					options={{ title: '로그인' }}
+					options={{ title: '로그인'}}
 				/>
 				<Stack.Screen
 					name='SignUp'

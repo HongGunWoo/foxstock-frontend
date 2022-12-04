@@ -1,10 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Platform } from 'react-native';
-import { IconButton, Colors, Portal, Modal, Divider } from 'react-native-paper';
+import React, { memo, useEffect,  useState } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { IconButton, Colors, Divider } from 'react-native-paper';
 
-import StockItemDetail from './StockItemDetail';
 import getEnvVars from '../../environment';
 
 const { apiUrl } = getEnvVars();
@@ -15,39 +14,17 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	modalContainer: {
-		flex: 1,
-		backgroundColor: 'white',
-		margin: 10,
-		borderRadius: 50
-	}
 })
 
-const StockItem = ({ item, checkStar }) => {
+const StockItem = ({ item, checkStar, showModal, setDetailItem, userEmail }) => {
 	const [iconName, setIconName] = useState('star-outline')
-	const [visible, setVisible] = useState(false);
 	const [checkStock, setCheckStock] = useState(checkStar);
-	const { data: userEmail } = useQuery(
-		['userEmail'],
-		() => {
-			if (userEmail !== undefined) {
-				return userEmail
-			}
-			return null;
-		},
-		{
-			initalData: false,
-			staleTime: Infinity,
-		});
-
-	const showModal = () => setVisible(true);
-	const hideModal = () => setVisible(false);
 
 	useEffect(() => {
 		checkStock ? setIconName('star') : setIconName('star-outline');
 	}, [checkStock])
 
-	const { mutate, data } = useMutation(
+	const { mutate } = useMutation(
 		['interest'],
 		async (stockInfo) => {
 			let delOrAdd = 'addInterest'
@@ -58,20 +35,20 @@ const StockItem = ({ item, checkStar }) => {
 		},
 	)
 
+	const handleOnPress = () => {
+		showModal();
+		setDetailItem(item);
+	}
+
 	return (
 		<>
-			<Portal>
-				<Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
-					<StockItemDetail item={item} />
-				</Modal>
-			</Portal>
 			<View style={styles.stockItem}>
-				<Text style={{ flex: 1.25, textAlign: 'center' }} onPress={showModal}>
+				<Text style={{ flex: 1.25, textAlign: 'center' }} onPress={handleOnPress}>
 					{item.item.name.length > 8 ? item.item.name.substr(0, 7) + '...' : item.item.name}
 				</Text>
-				<Text style={{ flex: 1, textAlign: 'right' }} onPress={showModal}>{item.item.currentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-				<Text style={{ flex: 1, textAlign: 'right' }} onPress={showModal}>{item.item.purchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-				<Text style={{ flex: 0.8, textAlign: 'right' }} onPress={showModal}>
+				<Text style={{ flex: 1, textAlign: 'right' }} onPress={handleOnPress}>{item.item.currentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+				<Text style={{ flex: 1, textAlign: 'right' }} onPress={handleOnPress}>{item.item.purchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
+				<Text style={{ flex: 0.8, textAlign: 'right' }} onPress={handleOnPress}>
 					{item.item.expectedReturn >= 1 ? Math.round(item.item.expectedReturn * 100 - 100) + '%' :
 						Math.round((1 - item.item.expectedReturn) * -100) + '%'}
 				</Text>
@@ -93,4 +70,4 @@ const StockItem = ({ item, checkStar }) => {
 	);
 };
 
-export default StockItem;
+export default memo(StockItem);

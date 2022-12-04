@@ -17,7 +17,11 @@ const FabUp = ({scrollRef}) => {
 		<FAB
 			style={styles.scrollTopBtn}
 			icon="chevron-up"
-			onPress={() => {scrollRef.current.props.data ? scrollRef.current.scrollToIndex({ index: 0 }) : null}}
+			// onPress={() => {console.log(scrollRef)}}
+			// onPress={() => {scrollRef.current.props.data ? scrollRef.current.scrollToIndex({ index: 0 }) : null}}
+			// onPress={() => {scrollRef.scrollTo({y: 0})}}
+			onPress={() => {scrollRef.current.scrollToOffset({ animated: true, offset: 0 })}}
+
 		/>
 	);
 };

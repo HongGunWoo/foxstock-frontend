@@ -1,14 +1,17 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Text, View, FlatList, StyleSheet, Modal } from 'react-native';
-import { Colors, Divider, IconButton, Provider } from 'react-native-paper';
+import { Colors, Divider, IconButton, Portal, Provider, Modal as PaperModal } from 'react-native-paper';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
+import { OptimizedFlatList } from 'react-native-optimized-flatlist';
 
 import FabUp from '../../components/FabUp';
 import StockItem from './StockItem';
 import ListIndicator from '../../components/ListIndicator';
 import getEnvVars from '../../environment';
+import StockItemDetail from './StockItemDetail';
+import TableHeader from '../../components/TableHeader';
 
 
 const { apiUrl } = getEnvVars();
@@ -65,6 +68,12 @@ const styles = StyleSheet.create({
 		right: 0,
 		top: 0,
 	},
+	itemModalContainer: {
+		// flex: 1,
+		backgroundColor: 'white',
+		margin: 10,
+		borderRadius: 50
+	}
 })
 
 const PageList = {
@@ -73,7 +82,7 @@ const PageList = {
 	"KOSDAQ": "kosdaq",
 }
 
-const StockTable = (props) => {
+const StockTable = memo((props) => {
 	const isFocused = useIsFocused();
 	const scrollRef = useRef();
 	const [visible, setVisible] = useState(false);
@@ -82,6 +91,8 @@ const StockTable = (props) => {
 	const [coordX, setCoordX] = useState(0);
 	const [coordY, setCoordY] = useState(0);
 	const [userInterest, setUserInterest] = useState([]);
+	const [itemVisible, setItemVisible] = useState(false);
+	const [detailItem, setDetailItem] = useState();
 
 	const { mutate, isLoading: userLoading } = useMutation(
 		['interestGet'],
@@ -92,19 +103,12 @@ const StockTable = (props) => {
 		}
 	)
 
-	const showModal = (title, content) => {
-		setTitle(title);
-		setContent(content);
-		setVisible(true);
-	};
-	const hideModal = () => setVisible(false);
-
 	const { isLoading, data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
 		[`infinite${PageList[props.route.name]}`, props.route.name],
 		async ({ pageParam = 0 }) => {
 			return await axios
 				.get(`${apiUrl}/stock/${PageList[props.route.name]}?page=${pageParam}`)
-				.then((res) => res.data);
+				.then((res) => {return res.data;})
 		},
 		{
 			getNextPageParam: (lastPage, allPages) => {
@@ -136,13 +140,48 @@ const StockTable = (props) => {
 		}
 	}, [isFocused])
 
+	// const showModal = useCallback((title, content) => {
+	// 	setTitle(title);
+	// 	setContent(content);
+	// 	setVisible(true);
+	// });
+	// const hideModal = useCallback(() => setVisible(false));
+
+	const _keyExtractor = useCallback((item, index) => {
+		return index.toString();
+	})
+
+	const showDetailModal = useCallback(() => setItemVisible(true));
+	const hideDetailModal = (() => setItemVisible(false));
+
+	const _renderItem = useCallback((item) => {
+		return <StockItem
+			item={item}
+			checkStar={userInterest.includes(item.item.srtnCd)}
+			showModal={showDetailModal}
+			setDetailItem={setDetailItem}
+			userEmail={userEmail}
+		/>;
+	})
+
+	const _onEndReached = useCallback(() => {
+		if (hasNextPage) {
+			fetchNextPage();
+		}
+	})
+
+
 	if (isLoading || userLoading || emailLoading) {
 		return null;
 	}
-
+	
 	return (
 		<Provider>
-			<Modal
+			<Modal transparent={true} visible={itemVisible} onRequestClose={hideDetailModal}>
+				<StockItemDetail item={detailItem} hideDetailModal={hideDetailModal}/>
+			</Modal>
+
+			{/* <Modal
 				transparent={true}
 				visible={visible}
 				onRequestClose={hideModal}
@@ -201,27 +240,32 @@ const StockTable = (props) => {
 				<FlatList
 					ref={scrollRef}
 					data={data.pages.map(page => page.content).flat()}
-					keyExtractor={(item, index) => {
-						return index.toString();
-					}}
-					renderItem={(item) => {
-						return (
-							<StockItem item={item} checkStar={userInterest.includes(item.item.srtnCd)} />
-						)
-					}}
-					onEndReached={() => {
-						if (hasNextPage) {
-							fetchNextPage();
-						}
-					}}
-					onEndReachedThreshold={0.3}
-					ListFooterComponent={isFetchingNextPage ?
-					<ListIndicator /> : null}
+					removeClippedSubviews={true}
+					disableVirtualization={false}
+					keyExtractor={_keyExtractor}
+					renderItem={_renderItem}
+					onEndReached={_onEndReached}
+					onEndReachedThreshold={0.2}
+					ListFooterComponent={isFetchingNextPage ? <ListIndicator /> : null}
 				/>
 				<FabUp scrollRef={scrollRef}/>
-			</View>
+			</View> */}
+			<TableHeader>
+			<FlatList
+					ref={scrollRef}
+					data={data.pages.map(page => page.content).flat()}
+					removeClippedSubviews={true}
+					disableVirtualization={false}
+					keyExtractor={_keyExtractor}
+					renderItem={_renderItem}
+					onEndReached={_onEndReached}
+					onEndReachedThreshold={0.2}
+					ListFooterComponent={isFetchingNextPage ? <ListIndicator /> : null}
+				/>
+				<FabUp scrollRef={scrollRef}/>
+			</TableHeader>
 		</Provider>
 	)
-};
+});
 
 export default StockTable;

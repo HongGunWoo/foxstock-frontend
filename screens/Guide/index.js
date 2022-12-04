@@ -56,7 +56,7 @@ const Guide = () => {
 
 				<GuideItem
 					title="추천 구매가란?"
-					content={`(BPS * ROE^10)/목표 수익률^10 = 추천 구매가\n위와 같은 계산을 통해 나온 값으로 1년 후 약 15% 수익을 얻기 위해 추천하는 매수 가격을 말해요.`}
+					content={`(BPS * ROE^10) / 목표 수익률^10 = 추천 구매가\n위와 같은 계산을 통해 나온 값으로 1년 후 약 15% 수익을 얻기 위해 추천하는 매수 가격을 말해요.`}
 				/>
 				<Divider style={{ backgroundColor: 'white', marginVertical: 5 }} />
 

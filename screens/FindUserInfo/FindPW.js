@@ -55,11 +55,10 @@ const FindPW = () => {
 	const [checkQuestion, setCheckQuestion] = useState('가입 시 설정한 질문을 골라주세요.')
 	const [checkAnswer, setCheckAnswer] = useState('');
 	const [expanded, setExpanded] = useState(false);
-	const [checkSuccess, setCheckSuccess] = useState(false);
 	const [checkAnswerIdx, setCheckAnswerIdx] = useState();
 	const [visible, setVisible] = useState(false);
 
-	const { mutate, data } = useMutation(
+	const { mutate } = useMutation(
 		['findPW'],
 		async (userInfo) => {
 			const url = `${apiUrl}/findPw`;
@@ -127,7 +126,6 @@ const FindPW = () => {
 							style={styles.input}
 							label='E-mail'
 							placeholder='이메일을 입력해주세요'
-							// activeUnderlineColor={theme.colors.red}
 							keyboardType='email-address'
 							value={email}
 							onChangeText={(email) => setEmail(email)}
@@ -163,7 +161,7 @@ const FindPW = () => {
 							onChangeText={(checkAnswer) => setCheckAnswer(checkAnswer)}
 						/>
 						<UserButton
-							disabled={checkSuccess || hasEmailError() || checkAnswerIdx === undefined || checkAnswer === ''}
+							disabled={hasEmailError() || checkAnswerIdx === undefined || checkAnswer === ''}
 							onPress={() => mutate({
 								"email": email,
 								"userCheckQuestionNumber": checkAnswerIdx,

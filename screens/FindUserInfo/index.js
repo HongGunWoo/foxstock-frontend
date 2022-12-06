@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import UserButton from '../../components/UserButton';
 
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

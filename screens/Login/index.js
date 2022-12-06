@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextInput, Button, Headline, HelperText } from 'react-native-paper';
+import { TextInput, Button, Headline, HelperText, Snackbar } from 'react-native-paper';
 import { Keyboard, KeyboardAvoidingView, Platform, StatusBar, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
@@ -31,11 +31,16 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		height: 50,
 		color: 'black',
+		zIndex: -1,
 	},
 	helperText: {
 		marginTop: 0,
-		marginLeft: 20
-	}
+		marginLeft: 20,
+	},
+	snackbar: {
+		backgroundColor: 'black',
+		zIndex: 100,
+	},
 })
 
 const Login = () => {
@@ -43,16 +48,15 @@ const Login = () => {
 	const queryClient = useQueryClient();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [checkLoginSuccess, setCheckLoginSuccess] = useState(false);
+	const [checkLoginSuccess, setCheckLoginSuccess] = useState(null);
 
-	const { mutate, data } = useMutation(
+	const { mutate } = useMutation(
 		['signIn'],
 		async (userInfo) => {
 			const url = `${apiUrl}/login`;
 			return await axios
 				.post(url, userInfo)
 				.then((res) => setCheckLoginSuccess(res.data))
-				
 		}
 	)
 
@@ -65,8 +69,8 @@ const Login = () => {
 
 	const hasEmailError = () => {
 		var reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    return !reg.test(email);
-  };
+		return !reg.test(email);
+	};
 
 	return (
 		<KeyboardAvoidingView
@@ -77,10 +81,25 @@ const Login = () => {
 			<ScrollView style={{ backgroundColor: 'white' }}>
 				<TouchableWithoutFeedback onPress={Platform.OS === 'web' ? null : Keyboard.dismiss}>
 					<View style={styles.container}>
+						<Snackbar
+							style={styles.snackbar}
+							visible={checkLoginSuccess === false}
+							duration={1000}
+							wrapperStyle={{
+								alignSelf: 'center',
+							}}
+							onDismiss={() => {
+								setCheckLoginSuccess(null);
+							}}
+						>
+							<Text style={{ color: 'white' }}>
+								해당 정보를 찾을 수 없습니다.
+							</Text>
+						</Snackbar>
 						<Headline style={styles.headline}>여우의</Headline>
 						<Headline style={{ ...styles.headline, marginBottom: 10 }}>주식 레시피</Headline>
 						<TextInput
-							style={{...styles.inputBox, marginBottom: 0}}
+							style={{ ...styles.inputBox, marginBottom: 0 }}
 							left={<TextInput.Icon name="account" />}
 							placeholder='Email'
 							keyboardType='email-address'
@@ -101,7 +120,7 @@ const Login = () => {
 						/>
 
 						<UserButton
-							disabled = {hasEmailError() || email === '' || password === ''}
+							disabled={hasEmailError() || email === '' || password === ''}
 							onPress={() => mutate({
 								"email": email,
 								"password": password,

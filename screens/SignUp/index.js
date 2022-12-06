@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { Headline, HelperText, List, Snackbar, TextInput } from 'react-native-paper';
+import { Keyboard, KeyboardAvoidingView, LogBox, Platform, ScrollView, StatusBar, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Headline, HelperText, List, Snackbar, Text, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import UserButton from '../../components/UserButton';
 import getEnvVars from '../../environment';
 
+LogBox.ignoreLogs(['500']);
 
 const { apiUrl } = getEnvVars();
 const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight;
@@ -31,8 +32,7 @@ const styles = StyleSheet.create({
 	},
 	snackbar: {
 		backgroundColor: 'black',
-		alignSelf: 'center',
-		textAlign: 'center',
+		zIndex: 100,
 	},
 })
 
@@ -47,8 +47,9 @@ const SignUp = () => {
 	const [expanded, setExpanded] = useState(false);
 	const [checkSuccess, setCheckSuccess] = useState(false);
 	const [checkAnswerIdx, setCheckAnswerIdx] = useState();
+	const [visibleError, setVisibleError] = useState(false);
 
-	const { mutate, data } = useMutation(
+	const { mutate } = useMutation(
 		['signUp'],
 		async (userInfo) => {
 			const url = `${apiUrl}/signUp`;
@@ -59,6 +60,9 @@ const SignUp = () => {
 		{
 			onSuccess: () => {
 				setCheckSuccess(true);
+			},
+			onError: () => {
+				setVisibleError(true);
 			}
 		}
 	)
@@ -84,12 +88,34 @@ const SignUp = () => {
 						<Snackbar
 							style={styles.snackbar}
 							visible={checkSuccess}
-							duration={3000}
+							wrapperStyle={{
+								alignSelf:'center',
+							}}
+							duration={1000}
 							onDismiss={() => {
 								setCheckSuccess(false);
 								navigation.navigate('Login');
 							}}
-						>회원가입 완료!</Snackbar>
+						>
+							<Text style={{color: 'white'}}>
+								회원가입 완료!
+							</Text>
+						</Snackbar>
+						<Snackbar
+							style={styles.snackbar}
+							visible={visibleError}
+							wrapperStyle={{
+								alignSelf:'center',
+							}}
+							duration={1000}
+							onDismiss={() => {
+								setVisibleError(false);
+							}}
+						>
+							<Text style={{color: 'white'}}>
+								이미 가입되어 있는 이메일입니다.
+							</Text>
+						</Snackbar>
 						<Headline style={styles.headline}>
 							여우의
 						</Headline>
@@ -103,7 +129,6 @@ const SignUp = () => {
 							style={styles.input}
 							label='이름'
 							placeholder='이름을 입력해주세요'
-							// activeUnderlineColor={theme.colors.red}
 							value={name}
 							onChangeText={(name) => setName(name)}
 						/>

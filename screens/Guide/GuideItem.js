@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { IconButton, Text, Title } from 'react-native-paper';
 
-
 const styles = StyleSheet.create({
 	contentContainer: {
 		backgroundColor: '#e9e9e9',
@@ -46,8 +45,7 @@ const GuideItem = (props) => {
 					<Text>
 						{props.content}
 					</Text>
-				</View> :
-				null
+				</View> :	null
 			}
 		</>
 	);

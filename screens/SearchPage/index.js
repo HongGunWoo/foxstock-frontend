@@ -43,6 +43,16 @@ const SearchPage = ({ route }) => {
 		}
 	)
 
+	const { mutate: interestMutate } = useMutation(
+		['interest'],
+		async (stockInfo) => {
+			const { email, srtnCd, checkStock, setCheckStock } = stockInfo;
+			return await axios
+				.post(`${apiUrl}/${checkStock ? 'deleteInterest' : 'addInterest'}`, {email, srtnCd})
+				.then((res) => res.data ? setCheckStock(true) : setCheckStock(false));
+		},
+	)
+
 	const { data: userEmail, isLoading: emailLoading } = useQuery(
 		['userEmail'],
 		() => {
@@ -72,13 +82,18 @@ const SearchPage = ({ route }) => {
 		return index.toString();
 	})
 
+	const handleOnPress = useCallback((item) => {
+		showDetailModal();
+		setDetailItem(item);
+	})
+
 	const _renderItem = useCallback((item) => {
 		return <StockItem
 			item={item}
 			checkStar={userInterest.includes(item.item.srtnCd)}
-			showModal={showDetailModal}
-			setDetailItem={setDetailItem}
+			handleOnPress={handleOnPress}
 			userEmail={userEmail}
+			mutate={interestMutate}
 		/>;
 	})
 

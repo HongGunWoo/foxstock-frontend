@@ -53,6 +53,7 @@ const StackNavigator = () => {
 					name='HomeStackScreen'
 					component={HomeStackScreen}
 					options={{ headerShown: false }}
+					
 				/>
 				<Stack.Screen
 					name='Login'

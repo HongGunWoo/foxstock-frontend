@@ -27,6 +27,16 @@ const InterestTable = () => {
 				.then((res) => res.data)
 		}
 	)
+	
+	const { mutate: interestMutate } = useMutation(
+		['interest'],
+		async (stockInfo) => {
+			const { email, srtnCd, checkStock, setCheckStock } = stockInfo;
+			return await axios
+				.post(`${apiUrl}/${checkStock ? 'deleteInterest' : 'addInterest'}`, {email, srtnCd})
+				.then((res) => res.data ? setCheckStock(true) : setCheckStock(false));
+		},
+	)
 
 	const { data: userEmail, isLoading: emailLoading } = useQuery(
 		['userEmail'],
@@ -57,13 +67,18 @@ const InterestTable = () => {
 		return index.toString();
 	})
 
+	const handleOnPress = useCallback((item) => {
+		showDetailModal();
+		setDetailItem(item);
+	})
+
 	const _renderItem = useCallback((item) => {
 		return <StockItem
 			item={item}
 			checkStar={true}
-			showModal={showDetailModal}
-			setDetailItem={setDetailItem}
+			handleOnPress={handleOnPress}
 			userEmail={userEmail}
+			mutate={interestMutate}
 		/>;
 	})
 

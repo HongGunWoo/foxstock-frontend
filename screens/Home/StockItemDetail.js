@@ -1,14 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Divider, Headline, IconButton, Subheading, Text } from 'react-native-paper';
 import ListIndicator from '../../components/ListIndicator';
 import getEnvVars from '../../environment';
 
 const { apiUrl } = getEnvVars();
-const dimensions = Dimensions.get('window');
-
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,7 +33,7 @@ const styles = StyleSheet.create({
 
 const StockItemDetail = ({ item, hideDetailModal }) => {
 
-	const { data, isLoading, isFetching } = useQuery(
+	const { data, isFetching } = useQuery(
 		['stockDetail'],
 		async () => {
 			return await axios
@@ -43,11 +41,6 @@ const StockItemDetail = ({ item, hideDetailModal }) => {
 				.then((res) => res.data);
 		}
 	)
-
-	if (isLoading) {
-		return <View style={styles.container} />
-		;
-	}
 
 	return (
 		<View style={styles.container}>

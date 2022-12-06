@@ -55,11 +55,14 @@ const styles = StyleSheet.create({
 		top: 0,
 	},
 	itemModalContainer: {
-		// flex: 1,
 		backgroundColor: 'white',
 		margin: 10,
 		borderRadius: 50
-	}
+	},
+	snackbar: {
+		backgroundColor: 'black',
+		zIndex: 100,
+	},
 })
 
 const TableHeader = memo((props) => {

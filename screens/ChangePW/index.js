@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { HelperText, Snackbar, TextInput } from 'react-native-paper';
+import { Keyboard, KeyboardAvoidingView, LogBox, Platform, ScrollView, StatusBar, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { HelperText, Snackbar, Text, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import getEnvVars from '../../environment';
 import UserButton from '../../components/UserButton';
+LogBox.ignoreLogs(['500']);
 
 const { apiUrl } = getEnvVars();
 const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight;
@@ -25,8 +26,7 @@ const styles = StyleSheet.create({
 	},
 	snackbar: {
 		backgroundColor: 'black',
-		alignSelf: 'center',
-		textAlign: 'center',
+		zIndex: 100,
 	},
 	helperText: {
 		marginTop: 0,
@@ -41,10 +41,11 @@ const ChnagePW = () => {
 	const [password, setPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [checkPassword, setCheckPassword] = useState('');
-	const [checkSuccess, setCheckSuccess] = useState(false);
+	const [checkSuccess, setCheckSuccess] = useState(null);
+	const [visibleError, setVisibleError] = useState(false);
 
 
-	const { mutate, data } = useMutation(
+	const { mutate } = useMutation(
 		['changePW'],
 		async (userInfo) => {
 			const url = `${apiUrl}/changePw`;
@@ -54,6 +55,11 @@ const ChnagePW = () => {
 					setCheckSuccess(res.data);
 				});
 		},
+		{
+			onError: () => {
+				setVisibleError(true);
+			}
+		}
 	)
 
 	const hasEmailError = () => {
@@ -77,14 +83,64 @@ const ChnagePW = () => {
 						<Snackbar
 							style={styles.snackbar}
 							visible={checkSuccess}
-							duration={3000}
+							duration={1000}
+							wrapperStyle={{
+								alignSelf: 'center',
+							}}
 							onDismiss={() => {
 								setCheckSuccess(false);
 								navigation.navigate('HomeStackScreen');
 							}}
-							>
+						>
+							<Text style={{ color: 'white' }}>
 								비밀번호 변경 완료!
-							</Snackbar>
+							</Text>
+						</Snackbar>
+						<Snackbar
+							style={styles.snackbar}
+							visible={checkSuccess === false}
+							duration={1000}
+							wrapperStyle={{
+								alignSelf: 'center',
+							}}
+							onDismiss={() => {
+								setCheckSuccess(null);
+							}}
+						>
+							<Text style={{ color: 'white' }}>
+								현재 비밀번호가 일치하지 않습니다.
+							</Text>
+						</Snackbar>
+						<Snackbar
+							style={styles.snackbar}
+							visible={visibleError}
+							duration={1000}
+							wrapperStyle={{
+								alignSelf: 'center',
+							}}
+							onDismiss={() => {
+								setVisibleError(false);
+							}}
+						>
+							<Text style={{ color: 'white' }}>
+								이메일이 존재하지 않습니다.
+							</Text>
+						</Snackbar>
+						<Snackbar
+							style={styles.snackbar}
+							visible={checkSuccess === false}
+							duration={1000}
+							wrapperStyle={{
+								alignSelf: 'center',
+							}}
+							onDismiss={() => {
+								setCheckSuccess(null);
+							}}
+						>
+							<Text style={{ color: 'white' }}>
+								현재 비밀번호가 일치하지 않습니다.
+							</Text>
+						</Snackbar>
 						<TextInput
 							style={styles.input}
 							label='E-mail'

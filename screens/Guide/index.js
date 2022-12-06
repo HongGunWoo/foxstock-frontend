@@ -4,7 +4,6 @@ import { Divider, Headline, IconButton, Text } from 'react-native-paper';
 
 import GuideItem from './GuideItem';
 
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
 })
 
 const Guide = () => {
-
 	return (
 		<ScrollView style={{ backgroundColor: 'white' }}>
 			<View style={styles.container}>
@@ -50,9 +48,6 @@ const Guide = () => {
 						\n신생 기업, 작년 비정상적인 매출액 등 여러 요인으로 인해 주식이 고평가되는 경우가 있으니 추천 구매가와 예상 수익률로만 구매를 결정하기보단	투자 종목을 고르는데 참고하는 용도로만 사용해요!`}
 					</Text>
 				</View>
-
-
-
 
 				<GuideItem
 					title="추천 구매가란?"

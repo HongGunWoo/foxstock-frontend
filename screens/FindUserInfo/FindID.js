@@ -123,7 +123,6 @@ const FindID = () => {
 							style={styles.input}
 							label='이름'
 							placeholder='이름을 입력해주세요'
-							// activeUnderlineColor={theme.colors.red}
 							value={name}
 							onChangeText={(name) => setName(name)}
 						/>

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {  FlatList, Modal } from 'react-native';
+import { FlatList, Modal } from 'react-native';
 import { Provider } from 'react-native-paper';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
@@ -27,13 +27,13 @@ const InterestTable = () => {
 				.then((res) => res.data)
 		}
 	)
-	
+
 	const { mutate: interestMutate } = useMutation(
 		['interest'],
 		async (stockInfo) => {
 			const { email, srtnCd, checkStock, setCheckStock } = stockInfo;
 			return await axios
-				.post(`${apiUrl}/${checkStock ? 'deleteInterest' : 'addInterest'}`, {email, srtnCd})
+				.post(`${apiUrl}/${checkStock ? 'deleteInterest' : 'addInterest'}`, { email, srtnCd })
 				.then((res) => res.data ? setCheckStock(true) : setCheckStock(false));
 		},
 	)
@@ -82,10 +82,6 @@ const InterestTable = () => {
 		/>;
 	})
 
-	if (userLoading || emailLoading) {
-		return null;
-	}
-
 	if (userEmail === null && userEmail === undefined) {
 		return null;
 	}
@@ -93,16 +89,21 @@ const InterestTable = () => {
 	return (
 		<Provider>
 			<Modal transparent={true} visible={itemVisible} onRequestClose={hideDetailModal}>
-				<StockItemDetail item={detailItem} hideDetailModal={hideDetailModal}/>
+				<StockItemDetail item={detailItem} hideDetailModal={hideDetailModal} />
 			</Modal>
 			<TableHeader>
-				<FlatList
-					ref={scrollRef}
-					data={data}
-					keyExtractor={_keyExtractor}
-					renderItem={_renderItem}
-				/>
-				<FabUp scrollRef={scrollRef}/>
+				{userLoading || emailLoading ? null :
+					<>
+						<FlatList
+							ref={scrollRef}
+							data={data}
+							keyExtractor={_keyExtractor}
+							renderItem={_renderItem}
+						/>
+						<FabUp scrollRef={scrollRef} />
+					</>
+				}
+
 			</TableHeader>
 		</Provider>
 	)

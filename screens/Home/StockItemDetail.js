@@ -45,7 +45,7 @@ const StockItemDetail = ({ item, hideDetailModal }) => {
 	return (
 		<View style={styles.container}>
 			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-				{isFetching ? <Subheading style={{ ...styles.modalText, flex: 1 }}>...</Subheading> :
+				{isFetching||!data ? <Subheading style={{ ...styles.modalText, flex: 1 }}>...</Subheading> :
 					<Subheading style={{ ...styles.modalText, flex: 1 }}>{data.type}</Subheading>}
 				<IconButton
 					icon={'close'}
@@ -82,10 +82,10 @@ const StockItemDetail = ({ item, hideDetailModal }) => {
 			<Text style={{ ...styles.modalText, fontWeight: 'bold' }}>
 				추천 구매가: {item.item.purchasePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
 			</Text>
-			{isFetching ? <Image resizeMode='contain' style={styles.graph} /> :
+			{isFetching||!data ? <Image resizeMode='contain' style={styles.graph} /> :
 				<Image resizeMode='contain' style={styles.graph} source={{ uri: data.chart }} />}
 			<ScrollView style={{ flex: 1 }}>
-				{isFetching ? <ListIndicator /> : 
+				{isFetching||!data ? <ListIndicator /> : 
 				<Text style={styles.modalText} >{data.info}</Text>}
 			</ScrollView>
 		</View>

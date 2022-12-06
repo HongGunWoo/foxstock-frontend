@@ -41,7 +41,7 @@ const Guide = () => {
 						icon="alert"
 						color='red'
 						size={30}
-						style={{padding:0, margin: 0}}
+						style={{ padding: 0, margin: 0 }}
 					/>
 					<Text>
 						{`추천 구매가와 예상 수익률은 "여우의 주식레시피"에서 예상하는 값으로 항상 정확한 값이 아닌 대략적인 예상치를 표현해요.
@@ -77,6 +77,10 @@ const Guide = () => {
 				<GuideItem
 					title="PBR(Price Book-value Ratio)란?"
 					content="주가순자신비율로 주가를 주당순자산가치(BPS)로 나눈 비율을 말해요. 즉 PBR = 현재 주가/BPS = 시가총액/순자산 이랍니다. 만약 PBR이 2라면 회사가 망했을 때 10원을 받을 수 있는 주식이 20원에 거래되고 있다는 것을 의미해요."
+				/>
+				<GuideItem
+					title="추천 구매가가 0이거나 예상 수익률이 -100%인건 뭔가요?"
+					content="신생 기업이기 때문에 ROE 데이터가 없는 경우 또는 적자인 경우에 추천 구매가가 0이거나 예상 수익률이 -100%로 표시돼요. 투자에 주의하세요!"
 				/>
 				<Divider style={{ backgroundColor: 'white', marginVertical: 5 }} />
 

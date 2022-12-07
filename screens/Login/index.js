@@ -4,9 +4,9 @@ import { Keyboard, KeyboardAvoidingView, Platform, StatusBar, ScrollView, StyleS
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import getEnvVars from '../../environment';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import UserButton from '../../components/UserButton';
+import getEnvVars from '../../environment';
 
 const { apiUrl } = getEnvVars();
 const StatusBarHeight = Platform.OS === 'ios' ? getStatusBarHeight(true) : StatusBar.currentHeight;

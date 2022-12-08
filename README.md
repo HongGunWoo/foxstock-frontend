@@ -1,4 +1,4 @@
-최종 발표 시연 영상
+[최종 발표 시연 영상](https://youtu.be/tYAhlO_otm4)
 
 <h1 align="center">여우의 주식 레시피</h1>
 
@@ -65,6 +65,5 @@ expo start
 - [WEB Link](http://foxrain.tk/)
 
 
-## 중간 발표 시연 영상
-https://youtu.be/Nc12wU7hgC8
+[중간 발표 시연 영상](https://youtu.be/Nc12wU7hgC8)
 

@@ -26,10 +26,9 @@
 
 ## How to calculate?
 - 추천 구매가:
-$ \frac{{ROE}^10}{PBR} = {기대수익률}^10 $
-$$\left(\frac{{ROE}^10}{PBR})^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
+$\frac{ROE{^10}}{PBR} = 기대수익률{^10}$
 
- Function : $S(x) = \frac{1}{1 + e^{-x}}$
+Function : $S(x) = \frac{1}{1 + e^{-x}}$
 
 
 

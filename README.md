@@ -25,11 +25,11 @@
 - 원하는 주식 종목 검색
 
 ## Stack
-![Generic badge](https://img.shields.io/badge/React-native-0.69.6-brightgreen.svg)
+![Generic badge](https://img.shields.io/badge/React native-0.69.6-brightgreen.svg)
 ![Generic badge](https://img.shields.io/badge/Expo-~46.0.13-green.svg)
-![Generic badge](https://img.shields.io/badge/React-navigation-^6.0.13-green.svg)
-![Generic badge](https://img.shields.io/badge/React-native-paper-^4.12.5-green.svg)
-![Generic badge](https://img.shields.io/badge/React-query-^4.10.3-green.svg)
+![Generic badge](https://img.shields.io/badge/React navigation-^6.0.13-green.svg)
+![Generic badge](https://img.shields.io/badge/React native paper-^4.12.5-green.svg)
+![Generic badge](https://img.shields.io/badge/React query-^4.10.3-green.svg)
 
 ## Target Platform
 - Web

@@ -19,7 +19,7 @@
 <p align="center">
   한국 전체 주식 종목에 대한 예상 수익률과 추천 구매가, 상세 주식 정보들을 참고하여 앞으로의 성장 높다고 생각되는 즉 가치 있는 주식에 투자하세요!  
 </p>
-
+***
 <p align="center">
   <img width="200" src="https://user-images.githubusercontent.com/45515388/206436738-23b3a0aa-8c8c-422c-b640-2b94e6c069e7.png">
 </p>

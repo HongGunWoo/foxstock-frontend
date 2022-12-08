@@ -26,7 +26,7 @@
 
 ## How to calculate?
 - 추천 구매가
-$$\left \frac{{ROE}^10}{PBR} = {기대수익률}^10 \right)$$
+$$ \frac{{ROE}^10}{PBR} = {기대수익률}^10 \right) $$
 
 
 ## Stack

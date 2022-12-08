@@ -14,10 +14,6 @@
 <img width="300" alt="inital page" src="https://user-images.githubusercontent.com/45515388/206373389-67f34906-5a57-4933-a93d-d661d85412a1.jpg">
 <img width="300" alt="inital page" src="https://user-images.githubusercontent.com/45515388/206373318-13e2b5ba-a1e8-4e2c-90bf-2e3cc1ab24bc.jpg">
 </p>
-  
-![KakaoTalk_20221208_044332492](https://user-images.githubusercontent.com/45515388/206373245-05786180-6990-4264-bc4a-ea1d5d13e6aa.jpg)
-![KakaoTalk_20221208_044332492_07](https://user-images.githubusercontent.com/45515388/206373389-67f34906-5a57-4933-a93d-d661d85412a1.jpg)
-![KakaoTalk_20221208_044332492_01](https://user-images.githubusercontent.com/45515388/206373318-13e2b5ba-a1e8-4e2c-90bf-2e3cc1ab24bc.jpg)
 
 ## Features
 - 추천 구매가

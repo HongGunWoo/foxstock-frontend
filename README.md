@@ -26,7 +26,10 @@
 
 ## How to calculate?
 - 추천 구매가:
-$\frac{ROE^{10}}{PBR} = 기대수익률^{10}$
+$\frac{BPS \times ROE^{10}}{목표수익률(15%)^{10}} = 추천구매가$
+
+- 예상 수익률:
+$\frac{ROE^{10}}{PBR} = 예상수익률^{10}$
 
 Function : $S(x) = \frac{1}{1 + e^{-x}}$
 

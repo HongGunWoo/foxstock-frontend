@@ -16,13 +16,18 @@
 </p>
 
 ## Features
-- 추천 구매가
-- 예상 수익률
+- 추천 구매가 - 1년 후 15%의 수익을 얻을 확률이 높은 구매가
+- 예상 수익률 - 현재가에서 매수했을 때 1년 후 얻을 수 있는률수익률
 - 관심 주식 종목 담기
 - 주식 종목 검색
 - 전체 종목, KOSPI, KOSDAQ 중 원하는 항목 선택
 - 상세 주식 페이지를 통한 1년 주식 가격 차트, BPS, ROE, PBR, 기업 정보 확인
 - 원하는 주식 종목 검색
+
+## How to calculate?
+- 추천 구매가
+$$\left \frac{{ROE}^10}{PBR} = {기대수익률}^10 \right)$$
+
 
 ## Stack
 ![Generic badge](https://img.shields.io/badge/Reactnative-0.69.6-brightgreen.svg)

@@ -1,4 +1,4 @@
-## 최종 발표 시연 영상
+최종 발표 시연 영상
 
 <h1 align="center">여우의 주식 레시피</h1>
 
@@ -25,7 +25,7 @@
 - 원하는 주식 종목 검색
 
 ## Stack
-![Generic badge](https://img.shields.io/badge/React-native-0.69.6-green.svg)
+![Generic badge](https://img.shields.io/badge/React-native-0.69.6-brightgreen.svg)
 ![Generic badge](https://img.shields.io/badge/Expo-~46.0.13-green.svg)
 ![Generic badge](https://img.shields.io/badge/React-navigation-^6.0.13-green.svg)
 ![Generic badge](https://img.shields.io/badge/React-native-paper-^4.12.5-green.svg)

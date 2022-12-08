@@ -26,7 +26,7 @@
 
 ## How to calculate?
 - 추천 구매가:
-$\frac{ROE{^10}}{PBR} = 기대수익률{^10}$
+$\frac{ROE^{10}}{PBR} = 기대수익률^{10}$
 
 Function : $S(x) = \frac{1}{1 + e^{-x}}$
 

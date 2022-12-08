@@ -36,12 +36,12 @@
 </p>
 
 <p align="center">
-  <img width="300" alt="3" src="https://user-images.githubusercontent.com/45515388/206436755-61f77f45-bd35-4c57-8064-5fc8e57058ce.png">
+  <img width="300" alt="3" src="https://user-images.githubusercontent.com/45515388/206436767-03440d66-f420-484c-bd69-1730cfcc865d.png">
 화면의 상단에 위치하는 네비게이션을 통해 전체 한국 주식 종목, KOSPI 종목, KOSDAQ 종목 중 보고 싶은 카테고리를 선택해서 볼 수 있습니다.
 </p>
 
 <p align="center">
-  <img width="300" alt="4" src="https://user-images.githubusercontent.com/45515388/206436767-03440d66-f420-484c-bd69-1730cfcc865d.png">
+  <img width="300" alt="4" src="https://user-images.githubusercontent.com/45515388/206436775-f3e19b4c-88be-4983-bb0e-956aff00ba91.png">
 하나의 주식에 대해 더 자세히 정보들을 보고 싶다면 해당하는 주식 항목을 클릭해 해당 주식의 상세 정보를 볼 수 있습니다.
 상세 정보 페이지의 경계선 위쪽은 주식 회사의 업종, 주식 이름, 종목코드, 증권시장을 나타내며 경계선 밑으로는 BPS, ROE, PBR, 현재가, 예상 수익률, 추천 구매가, 1년 동안의 가격 차트, 기업 소개를 나타냅니다.
 </p>
@@ -54,25 +54,37 @@
 </p>
 
 <p align="center">
-  <img width="300" alt="6" src="https://user-images.githubusercontent.com/45515388/206436775-f3e19b4c-88be-4983-bb0e-956aff00ba91.png">
+  <img width="300" alt="6" src="https://user-images.githubusercontent.com/45515388/206436793-454b0b2c-6943-4aa4-9bf7-c9e0bf82408b.png">
 화면의 상단에 위치하는 로그인 버튼을 클릭해 로그인 페이지로 이동할 수 있으며 로그인 페이지에서는 회원가입과 아이디/비밀번호 찾기가 가능합니다.
 </p>
 
 <p align="center">
-  <img width="300" alt="7" src="https://user-images.githubusercontent.com/45515388/206436793-454b0b2c-6943-4aa4-9bf7-c9e0bf82408b.png">
+  <img width="300" alt="7" src="https://user-images.githubusercontent.com/45515388/206436815-e35e68a1-9a7b-4e5d-9e27-f123c4fc5ef8.png">
 로그인 화면에서 회원가입 버튼을 클릭하면 회원가입 페이지로 이동하며 이름, Email, 비밀번호, 정보를 찾기 위한 질문 선택과, 답을 모두 입력해야 회원가입이 가능합니다.
 선택하진 질문과 그에 대한 답은 ID, PW를 잊어버렸을 경우 사용되므로 유의하시길 바랍니다.
 </p>
 
 <p align="center">
-  <img width="300" alt="8" src="https://user-images.githubusercontent.com/45515388/206436815-e35e68a1-9a7b-4e5d-9e27-f123c4fc5ef8.png">
+  <img width="300" alt="8" src="https://user-images.githubusercontent.com/45515388/206436827-dd366fc2-6c78-446f-9dcb-c4b47144fec5.png">
 로그인 화면에서 아이디/비밀번호 찾기를 클릭하면 왼쪽 사진의 가장 왼쪽 페이지로 이동하게 되며 찾길 원하는 정보에 따라 버튼을 클릭해 ID 찾기 페이지와 PW찾기 페이지로 이동할 수 있습니다.
 비밀번호 찾기의 경우 원래 설정한 비밀번호를 알려드리는 것이 아닌 랜덤으로 생성된 비밀번호를 제공하므로 후에 비밀번호 변경이 필요합니다.
 </p>
 
-![image](https://user-images.githubusercontent.com/45515388/206436827-dd366fc2-6c78-446f-9dcb-c4b47144fec5.png)
-![image](https://user-images.githubusercontent.com/45515388/206436838-11c7c1a4-b458-495d-b9bf-4308431984f6.png)
-![image](https://user-images.githubusercontent.com/45515388/206436851-40353933-896c-4f7a-81c2-ccab6794c3ab.png)
+<p align="center">
+  <img width="300" alt="9" src="https://user-images.githubusercontent.com/45515388/206436838-11c7c1a4-b458-495d-b9bf-4308431984f6.png">
+로그인 화면에서 아이디/비밀번호 찾기를 클릭하면 왼쪽 사진의 가장 왼쪽 페이지로 이동하게 되며 찾길 원하는 정보에 따라 버튼을 클릭해 ID 찾기 페이지와 PW찾기 페이지로 이동할 수 있습니다.
+비밀번호 찾기의 경우 원래 설정한 비밀번호를 알려드리는 것이 아닌 랜덤으로 생성된 비밀번호를 제공하므로 후에 비밀번호 변경이 필요합니다.
+</p>
+
+<p align="center">
+  <img width="300" alt="9" src="https://user-images.githubusercontent.com/45515388/206436851-40353933-896c-4f7a-81c2-ccab6794c3ab.png">
+로그인을 하게 된다면 화면 상단의 로그인 버튼이 로그인한 이메일의 가장 앞자리 알파벳의 대문자를 보여주는 버튼으로 변경되고 상단의 네이게이션에 관심 항목이 추가됩니다.
+관심 항목에서는 사용자가 주식 리스트 우측에 존재하는 별 버튼을 클릭한 주식들이 나타나며 취소하고 싶다면 다시 별 버튼을 클릭해 관심 항목에 담았던 주식을 취소할 수 있습니다.
+</p>
+
+![image]()
+![image]()
+![image]()
 ![image](https://user-images.githubusercontent.com/45515388/206436865-e9a2d313-ea3d-41d7-a7b5-9235abefbb6b.png)
 
 

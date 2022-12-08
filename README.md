@@ -15,6 +15,10 @@
 <img width="1535" alt="Screen Shot 2021-03-26 at 5 36 28 PM" src="https://user-images.githubusercontent.com/32592965/112604730-d4e5de00-8e59-11eb-83e3-e72cf5309f15.png">
 <img width="1536" alt="Screen Shot 2021-03-26 at 4 39 44 PM" src="https://user-images.githubusercontent.com/32592965/112598443-edea9100-8e51-11eb-86cf-b61ad794ba47.png">
 
+![KakaoTalk_20221208_044332492](https://user-images.githubusercontent.com/45515388/206373245-05786180-6990-4264-bc4a-ea1d5d13e6aa.jpg)
+![KakaoTalk_20221208_044332492_07](https://user-images.githubusercontent.com/45515388/206373389-67f34906-5a57-4933-a93d-d661d85412a1.jpg)
+![KakaoTalk_20221208_044332492_01](https://user-images.githubusercontent.com/45515388/206373318-13e2b5ba-a1e8-4e2c-90bf-2e3cc1ab24bc.jpg)
+
 ## Features
 - 추천 구매가
 - 예상 수익률
@@ -27,7 +31,7 @@
 ## Stack
 ![Generic badge](https://img.shields.io/badge/Reactnative-0.69.6-brightgreen.svg)
 ![Generic badge](https://img.shields.io/badge/Expo-~46.0.13-green.svg)
-![Generic badge](https://img.shields.io/badge/Reactnavigation-^6.0.13-yellow.svg)
+![Generic badge](https://img.shields.io/badge/ReactNavigation-^6.0.13-yellow.svg)
 ![Generic badge](https://img.shields.io/badge/ReactNativePaper-^4.12.5-yellow.svg)
 ![Generic badge](https://img.shields.io/badge/ReactQuery-^4.10.3-green.svg)
 

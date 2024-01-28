@@ -6,8 +6,6 @@
   한국 전체 주식 종목에 대한 예상 수익률과 추천 구매가, 상세 주식 정보를 알 수 있습니다.
 </p>
 
-[demo(WEB Version)](http://foxrain.tk/)
-
 ## App ScreenShot
 <p align="center">
 <img width="250" alt="inital page1" src="https://user-images.githubusercontent.com/45515388/206373245-05786180-6990-4264-bc4a-ea1d5d13e6aa.jpg">
